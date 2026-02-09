@@ -1,0 +1,200 @@
+@import "tailwindcss";
+
+@theme {
+    /* Colors - Valentine Theme */
+    --color-background: #0d0d0d;
+    --color-foreground: #f0e6f6;
+
+    --color-card: #1a1a2e;
+    --color-card-foreground: #f0e6f6;
+
+    --color-popover: #1a1a2e;
+    --color-popover-foreground: #f0e6f6;
+
+    --color-primary: #ff6b9d;
+    --color-primary-foreground: #ffffff;
+
+    --color-secondary: #2a2a3e;
+    --color-secondary-foreground: #f0e6f6;
+
+    --color-muted: #1a1a2e;
+    --color-muted-foreground: #8888aa;
+
+    --color-accent: #ff6b9d;
+    --color-accent-foreground: #ffffff;
+
+    --color-destructive: #e74c6f;
+    --color-destructive-foreground: #ffffff;
+
+    --color-success: #4caf50;
+
+    --color-border: #2a2a3e;
+    --color-input: #2a2a3e;
+    --color-ring: #ff6b9d;
+
+    /* Radius */
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+
+    /* Fonts */
+    --font-sans: system-ui, -apple-system, sans-serif;
+    --font-mono: "Fira Code", "Cascadia Code", "Consolas", "Courier New", monospace;
+}
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+
+    body {
+        @apply bg-background text-foreground;
+        font-family: var(--font-mono);
+    }
+}
+
+@layer utilities {
+    .text-balance {
+        text-wrap: balance;
+    }
+
+    /* Custom animations */
+    @keyframes shake {
+        0%,
+        100% {
+            transform: translateX(0);
+        }
+        25% {
+            transform: translateX(-10px);
+        }
+        75% {
+            transform: translateX(10px);
+        }
+    }
+
+    @keyframes slide-out-left {
+        0% {
+            transform: translateX(0) scale(1);
+            opacity: 1;
+        }
+        60% {
+            transform: translateX(-120%) scale(0.9);
+            opacity: 0;
+        }
+        100% {
+            transform: translateX(-100%) scale(1);
+            opacity: 0;
+        }
+    }
+
+    @keyframes slide-in-left {
+        0% {
+            transform: translateX(-100%) scale(0.95);
+            opacity: 0;
+        }
+        100% {
+            transform: translateX(0) scale(1);
+            opacity: 1;
+        }
+    }
+
+    @keyframes slide-in-right {
+        0% {
+            transform: translateX(100%) scale(0.95);
+            opacity: 0;
+        }
+        100% {
+            transform: translateX(0) scale(1);
+            opacity: 1;
+        }
+    }
+
+    @keyframes slide-out-up {
+        0% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        100% {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+    }
+
+    @keyframes slide-in-up {
+        0% {
+            transform: translateY(100%);
+            opacity: 0;
+        }
+        100% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes pulse-heart {
+        0%,
+        100% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.1);
+        }
+    }
+
+    @keyframes glow {
+        0%,
+        100% {
+            text-shadow: 0 0 10px rgba(255, 107, 157, 0.5);
+        }
+        50% {
+            text-shadow: 0 0 20px rgba(255, 107, 157, 0.8);
+        }
+    }
+
+    @keyframes fall {
+        to {
+            transform: translateY(100vh) rotate(360deg);
+        }
+    }
+
+    .animate-shake {
+        animation: shake 0.5s ease-in-out;
+    }
+
+    .animate-slide-out-left {
+        animation: slide-out-left 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+    }
+
+    .animate-slide-in-left {
+        animation: slide-in-left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .animate-slide-in-right {
+        animation: slide-in-right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .animate-slide-out-up {
+        animation: slide-out-up 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    .animate-slide-in-up {
+        animation: slide-in-up 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .animate-pulse-heart {
+        animation: pulse-heart 1.5s ease-in-out infinite;
+    }
+
+    .animate-glow {
+        animation: glow 2s ease-in-out infinite;
+    }
+
+    .animate-fall {
+        animation: fall 3s linear forwards;
+    }
+
+    .no-animation {
+        animation: none !important;
+    }
+}
