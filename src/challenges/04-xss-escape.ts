@@ -12,12 +12,12 @@ export const xssChallenge: Challenge = {
         [tx("")],
     ],
     options: [
-        { key: "A", label: "&lt;script&gt;" },
-        { key: "B", label: "%3Cscript%3E" },
+        { key: "A", label: "%3Cscript%3E" },
+        { key: "B", label: "&lt;script&gt;" },
         { key: "C", label: "\\<script\\>" },
     ],
-    validate: (answer: string) => answer === "A",
+    validate: (answer: string) => answer === "B",
     hint1: "Indice : Les HTML entities commencent par & et finissent par ;",
     hint2: "Indice 2 : < devient &lt; et > devient &gt; en HTML entities (le 't' c'est pour 'less than' / 'greater than')",
-    hint3: "Réponse : A (&lt;script&gt;)",
+    hint3: "Réponse : B (&lt;script&gt;)",
 };

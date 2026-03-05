@@ -14,13 +14,13 @@ export const httpChallenge: Challenge = {
         [tx("Response: "), cmt("???")],
     ],
     options: [
-        { key: "A", label: "200 OK" },
-        { key: "B", label: "404 Not Found" },
-        { key: "C", label: "503 Service Unavailable" },
+        { key: "A", label: "404 Not Found" },
+        { key: "B", label: "503 Service Unavailable" },
+        { key: "C", label: "200 OK" },
         { key: "D", label: "418 I'm a teapot" },
     ],
-    validate: (answer: string) => answer === "A",
+    validate: (answer: string) => answer === "C",
     hint1: "Indice : Les codes de succès HTTP commencent tous par le même chiffre...",
     hint2: "Indice 2 : 200 OK signifie que la requête a réussi. 404 = introuvable, 503 = service indisponible, 418 = je suis une théière 🫖",
-    hint3: "Réponse : A (200 OK)",
+    hint3: "Réponse : C (200 OK)",
 };
