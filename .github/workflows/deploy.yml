@@ -1,4 +1,4 @@
-name: Deploy valentine.sylvain.pro
+name: Deploy valentine.sylvain.sh
 
 on:
   push:
