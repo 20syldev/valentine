@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, ArrowRight, Check } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Heart } from "lucide-react";
 import {
     Binary,
     Code,
@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { challenges } from "@/challenges";
 import type { Challenge as ChallengeType, CodeLine, CodeToken } from "@/challenges/types";
@@ -52,7 +52,7 @@ function CodeBlock({ lines }: { lines: CodeLine[] }) {
     };
 
     return (
-        <div className="bg-card border border-border rounded-lg p-4 font-mono text-sm overflow-x-auto">
+        <div className="bg-card border border-border rounded-lg p-3 sm:p-4 font-mono text-xs sm:text-sm overflow-x-auto">
             {lines.map((line, lineIndex) => (
                 <div key={lineIndex}>
                     {line.map((token: CodeToken, tokenIndex: number) => (
@@ -87,6 +87,47 @@ export function Challenge() {
     const isCompleted = state.completedChallenges.includes(challenge.id);
     const validatedAnswer = state.validatedAnswers[challenge.id];
     const attempts = state.attempts[challenge.id] || 0;
+
+    // Swipe handling
+    const touchStartRef = useRef<{ x: number; time: number } | null>(null);
+    const touchEndXRef = useRef<number>(0);
+
+    const handleTouchStart = useCallback((e: React.TouchEvent) => {
+        touchStartRef.current = { x: e.touches[0].clientX, time: Date.now() };
+    }, []);
+
+    const handleTouchMove = useCallback((e: React.TouchEvent) => {
+        touchEndXRef.current = e.touches[0].clientX;
+    }, []);
+
+    const handleTouchEnd = useCallback(() => {
+        if (!touchStartRef.current) return;
+        const deltaX = touchEndXRef.current - touchStartRef.current.x;
+        const duration = Date.now() - touchStartRef.current.time;
+        touchStartRef.current = null;
+
+        if (Math.abs(deltaX) < 50 || duration > 300) return;
+
+        if (deltaX < 0) {
+            // Swipe left → next challenge
+            const canGoNext =
+                challengeIndex < challenges.length &&
+                (isCompleted || state.completedChallenges.length >= challengeIndex);
+            if (canGoNext) {
+                router.push(`/challenge/${challengeIndex + 1}`);
+            } else if (
+                challengeIndex === challenges.length &&
+                (isCompleted || state.completedChallenges.length >= challengeIndex)
+            ) {
+                router.push("/finale");
+            }
+        } else {
+            // Swipe right → previous challenge
+            if (challengeIndex > 1) {
+                router.push(`/challenge/${challengeIndex - 1}`);
+            }
+        }
+    }, [challengeIndex, isCompleted, state.completedChallenges.length, router]);
 
     // Block access if trying to access a challenge that hasn't been unlocked yet
     const canAccess = challengeIndex <= state.completedChallenges.length + 1;
@@ -222,12 +263,18 @@ export function Challenge() {
     return (
         <>
             <Progress current={state.completedChallenges.length} total={challenges.length} />
-            <div className="min-h-screen flex items-center justify-center px-6 py-20 overflow-hidden">
+            <div
+                className="min-h-screen flex flex-col sm:items-center sm:justify-center px-0 sm:px-6 pt-6 sm:py-20 overflow-hidden"
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
+                style={{ touchAction: "pan-y" }}
+            >
                 {/* Navigation Buttons */}
                 {challengeIndex > 1 && (
                     <Link
                         href={`/challenge/${challengeIndex - 1}`}
-                        className="fixed left-4 top-1/2 -translate-y-1/2 p-2 bg-card hover:bg-card/80 rounded-full transition-all duration-300 z-10 hover:translate-x-0.5"
+                        className="hidden sm:block fixed left-4 top-1/2 -translate-y-1/2 p-2 bg-card hover:bg-card/80 rounded-full transition-all duration-300 z-10 hover:translate-x-0.5"
                     >
                         <ArrowLeft className="w-4 h-4 transition-transform" />
                     </Link>
@@ -237,7 +284,7 @@ export function Challenge() {
                     (isCompleted || state.completedChallenges.length >= challengeIndex) && (
                         <Link
                             href={`/challenge/${challengeIndex + 1}`}
-                            className="fixed right-4 top-1/2 -translate-y-1/2 p-2 bg-card hover:bg-card/80 rounded-full transition-all duration-300 hover:translate-x-0.5"
+                            className="hidden sm:block fixed right-4 top-1/2 -translate-y-1/2 p-2 bg-card hover:bg-card/80 rounded-full transition-all duration-300 hover:translate-x-0.5"
                         >
                             <ArrowRight className="w-4 h-4 transition-transform" />
                         </Link>
@@ -248,17 +295,24 @@ export function Challenge() {
                     (isCompleted || state.completedChallenges.length >= challengeIndex) && (
                         <Link
                             href="/finale"
-                            className="fixed right-4 top-1/2 -translate-y-1/2 flex gap-2 items-center px-4 py-2 bg-success hover:bg-success/90 text-white rounded-full transition-all duration-300 font-semibold text-sm hover:translate-x-0.5 shadow-lg"
+                            className="hidden sm:flex fixed right-4 top-1/2 -translate-y-1/2 gap-2 items-center px-4 py-2 bg-success hover:bg-success/90 text-white rounded-full transition-all duration-300 font-semibold text-sm hover:translate-x-0.5 shadow-lg"
                         >
                             Terminer
                             <ArrowRight className="w-4 h-4 transition-transform" />
                         </Link>
                     )}
 
+                {/* Mobile Header */}
+                <div className="flex sm:hidden items-center justify-center gap-5 pb-5">
+                    <Heart className="w-6 h-6 text-primary fill-current" />
+                    <span className="text-md font-bold text-primary tracking-widest">HACK MY HEART</span>
+                    <Heart className="w-6 h-6 text-primary fill-current" />
+                </div>
+
                 {/* Challenge Card */}
                 <div
                     className={cn(
-                        "max-w-2xl w-full bg-card border border-border rounded-lg p-8 space-y-6 transition-all duration-300",
+                        "max-w-2xl w-full flex-1 sm:flex-initial bg-card border-y sm:border border-border rounded-none sm:rounded-lg p-4 sm:p-8 space-y-4 sm:space-y-6 transition-all duration-300",
                         isSuccess && "ring-2 ring-success shadow-lg shadow-success/20",
                         isExiting && "animate-slide-out-left",
                         isError && "animate-shake",
@@ -268,9 +322,9 @@ export function Challenge() {
                     )}
                 >
                     {/* Header */}
-                    <div className="flex items-center gap-4">
-                        <Icon className="w-12 h-12 text-primary" />
-                        <h2 className="text-2xl font-bold">{challenge.title}</h2>
+                    <div className="flex items-center gap-3 sm:gap-4">
+                        <Icon className="w-8 h-8 sm:w-12 sm:h-12 text-primary shrink-0" />
+                        <h2 className="text-xl sm:text-2xl font-bold">{challenge.title}</h2>
                     </div>
 
                     {/* Description */}
@@ -283,7 +337,7 @@ export function Challenge() {
 
                     {/* Input Types */}
                     {challenge.type === "text-input" && (
-                        <div className="flex gap-3">
+                        <div className="flex gap-2 sm:gap-3">
                             <input
                                 type="text"
                                 value={inputValue}
@@ -294,7 +348,7 @@ export function Challenge() {
                                 placeholder={challenge.placeholder || "Ta réponse..."}
                                 disabled={isCompleted || isSuccess}
                                 className={cn(
-                                    "flex-1 px-4 py-2 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring",
+                                    "flex-1 min-w-0 px-3 sm:px-4 py-2 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring",
                                     (isCompleted || isSuccess) && "border-success"
                                 )}
                                 autoFocus
@@ -303,7 +357,7 @@ export function Challenge() {
                                 onClick={handleTextSubmit}
                                 disabled={isCompleted || isSuccess}
                                 className={cn(
-                                    "px-6 py-2 rounded-lg font-semibold transition-colors",
+                                    "px-4 sm:px-6 py-2 rounded-lg font-semibold transition-colors shrink-0",
                                     isCompleted || isSuccess
                                         ? "bg-success text-white"
                                         : "bg-primary text-primary-foreground hover:bg-primary/90"
@@ -361,19 +415,19 @@ export function Challenge() {
 
                     {challenge.type === "firewall" && (
                         <div className="space-y-4">
-                            <div className="bg-card border border-border rounded-lg p-4 font-mono text-sm space-y-2">
+                            <div className="bg-card border border-border rounded-lg p-3 sm:p-4 font-mono text-xs sm:text-sm space-y-2">
                                 {challenge.packets?.map((packet, index) => (
                                     <div
                                         key={index}
-                                        className="flex items-center gap-3 py-1.5 px-2 rounded hover:bg-muted/50 transition-colors"
+                                        className="flex flex-wrap sm:flex-nowrap items-center gap-1.5 sm:gap-3 py-1.5 px-2 rounded hover:bg-muted/50 transition-colors"
                                     >
                                         <span className="text-muted-foreground text-xs w-5 shrink-0">
                                             #{index + 1}
                                         </span>
-                                        <span className="text-pink-400">{packet.src}</span>
+                                        <span className="text-pink-400 truncate">{packet.src}</span>
                                         <span className="text-muted-foreground">→</span>
-                                        <span className="text-blue-400">{packet.dst}</span>
-                                        <span className="text-muted-foreground mx-1">|</span>
+                                        <span className="text-blue-400 truncate">{packet.dst}</span>
+                                        <span className="text-muted-foreground mx-1 hidden sm:inline">|</span>
                                         <span className="text-green-400 flex-1 truncate">
                                             {packet.payload}
                                         </span>

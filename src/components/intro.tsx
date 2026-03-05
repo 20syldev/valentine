@@ -43,10 +43,10 @@ export function Intro() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center px-6 overflow-hidden">
-            <div className={`max-w-2xl w-full ${exiting ? "animate-slide-out-up" : ""}`}>
+        <div className="min-h-screen flex flex-col sm:items-center sm:justify-center px-0 sm:px-6 overflow-hidden">
+            <div className={`max-w-2xl w-full flex-1 sm:flex-initial flex flex-col ${exiting ? "animate-slide-out-up" : ""}`}>
                 {/* Terminal Header */}
-                <div className="bg-card border border-border rounded-t-lg p-3 flex items-center gap-2">
+                <div className="bg-card border-y sm:border border-border rounded-none sm:rounded-t-lg p-3 flex items-center gap-2">
                     <Terminal className="w-5 h-5 text-primary" />
                     <span className="text-sm font-mono text-muted-foreground">
                         root@valentine:~#
@@ -54,14 +54,14 @@ export function Intro() {
                 </div>
 
                 {/* Terminal Content */}
-                <div className="bg-card border border-t-0 border-border rounded-b-lg p-8 font-mono space-y-6">
+                <div className="bg-card border-b sm:border sm:border-t-0 border-border rounded-none sm:rounded-b-lg p-4 sm:p-8 font-mono space-y-6 flex-1 sm:flex-initial">
                     {/* Heart Icon */}
                     <div className="flex justify-center">
-                        <Heart className="w-20 h-20 text-primary animate-pulse-heart fill-current" />
+                        <Heart className="w-14 h-14 sm:w-20 sm:h-20 text-primary animate-pulse-heart fill-current" />
                     </div>
 
                     {/* Title */}
-                    <h1 className="text-4xl md:text-5xl font-bold animate-glow text-center">
+                    <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold animate-glow text-center">
                         HACK MY HEART
                     </h1>
 

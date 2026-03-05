@@ -93,7 +93,7 @@ export function Finale() {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center px-6">
+        <div className="min-h-screen flex items-center justify-center px-2 sm:px-6">
             {/* Heart Rain */}
             {hearts.map((heart) => (
                 <Heart
@@ -108,7 +108,7 @@ export function Finale() {
                 />
             ))}
 
-            <div className="max-w-2xl w-full text-center space-y-8">
+            <div className="max-w-2xl w-full text-center space-y-6 sm:space-y-8">
                 {/* Hearts Icon */}
                 <div className="flex justify-center gap-2">
                     <Heart className="w-12 h-12 text-primary fill-current" />
@@ -117,7 +117,7 @@ export function Finale() {
                 </div>
 
                 {/* Title */}
-                <h1 className="text-4xl md:text-5xl font-bold text-success">ACCESS GRANTED</h1>
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-success">ACCESS GRANTED</h1>
 
                 {/* Separator */}
                 <div className="flex justify-center">
@@ -139,7 +139,7 @@ export function Finale() {
 
                 {/* Big Heart */}
                 <div className="flex justify-center pt-4">
-                    <Heart className="w-32 h-32 text-primary fill-current animate-pulse-heart" />
+                    <Heart className="w-20 h-20 sm:w-32 sm:h-32 text-primary fill-current animate-pulse-heart" />
                 </div>
 
                 {/* Restart Button */}
