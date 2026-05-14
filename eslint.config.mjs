@@ -1,14 +1,14 @@
-import { FlatCompat } from "@eslint/eslintrc";
 import { defineConfig, globalIgnores } from "eslint/config";
+import coreWebVitals from "eslint-config-next/core-web-vitals";
+import nextTypescript from "eslint-config-next/typescript";
 import prettier from "eslint-config-prettier";
 import checkFile from "eslint-plugin-check-file";
 import importPlugin from "eslint-plugin-import";
 
-const compat = new FlatCompat();
-
 const eslintConfig = defineConfig([
     // Next.js
-    ...compat.extends("next/core-web-vitals", "next/typescript"),
+    ...coreWebVitals,
+    ...nextTypescript,
 
     // Main
     {
