@@ -33,28 +33,6 @@ export function Finale() {
         }
     }, []);
 
-    // Typewriter effect
-    useEffect(() => {
-        const message = `> ${FINAL_MESSAGE}`;
-        let i = 0;
-        const element = messageRef.current;
-        if (!element) return;
-
-        element.textContent = "";
-        const interval = setInterval(() => {
-            if (i < message.length) {
-                element.textContent += message[i];
-                i++;
-            } else {
-                clearInterval(interval);
-                setShowSubContent(true);
-                startHeartRain();
-            }
-        }, 60);
-
-        return () => clearInterval(interval);
-    }, []);
-
     // Heart rain
     const startHeartRain = () => {
         let count = 0;
@@ -81,6 +59,28 @@ export function Finale() {
             }, newHeart.duration * 1000);
         }, 200);
     };
+
+    // Typewriter effect
+    useEffect(() => {
+        const message = `> ${FINAL_MESSAGE}`;
+        let i = 0;
+        const element = messageRef.current;
+        if (!element) return;
+
+        element.textContent = "";
+        const interval = setInterval(() => {
+            if (i < message.length) {
+                element.textContent += message[i];
+                i++;
+            } else {
+                clearInterval(interval);
+                setShowSubContent(true);
+                startHeartRain();
+            }
+        }, 60);
+
+        return () => clearInterval(interval);
+    }, []);
 
     const handleRestart = () => {
         clearState();
