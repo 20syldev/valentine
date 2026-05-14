@@ -44,7 +44,9 @@ export function Intro() {
 
     return (
         <div className="min-h-screen flex flex-col sm:items-center sm:justify-center px-0 sm:px-6 overflow-hidden">
-            <div className={`max-w-2xl w-full flex-1 sm:flex-initial flex flex-col ${exiting ? "animate-slide-out-up" : ""}`}>
+            <div
+                className={`max-w-2xl w-full flex-1 sm:flex-initial flex flex-col ${exiting ? "animate-slide-out-up" : ""}`}
+            >
                 {/* Terminal Header */}
                 <div className="bg-card border-y sm:border border-border rounded-none sm:rounded-t-lg p-3 flex items-center gap-2">
                     <Terminal className="w-5 h-5 text-primary" />

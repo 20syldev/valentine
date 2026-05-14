@@ -305,7 +305,9 @@ export function Challenge() {
                 {/* Mobile Header */}
                 <div className="flex sm:hidden items-center justify-center gap-5 pb-5">
                     <Heart className="w-6 h-6 text-primary fill-current" />
-                    <span className="text-md font-bold text-primary tracking-widest">HACK MY HEART</span>
+                    <span className="text-md font-bold text-primary tracking-widest">
+                        HACK MY HEART
+                    </span>
                     <Heart className="w-6 h-6 text-primary fill-current" />
                 </div>
 
@@ -427,7 +429,9 @@ export function Challenge() {
                                         <span className="text-pink-400 truncate">{packet.src}</span>
                                         <span className="text-muted-foreground">→</span>
                                         <span className="text-blue-400 truncate">{packet.dst}</span>
-                                        <span className="text-muted-foreground mx-1 hidden sm:inline">|</span>
+                                        <span className="text-muted-foreground mx-1 hidden sm:inline">
+                                            |
+                                        </span>
                                         <span className="text-green-400 flex-1 truncate">
                                             {packet.payload}
                                         </span>

@@ -117,7 +117,9 @@ export function Finale() {
                 </div>
 
                 {/* Title */}
-                <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-success">ACCESS GRANTED</h1>
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-success">
+                    ACCESS GRANTED
+                </h1>
 
                 {/* Separator */}
                 <div className="flex justify-center">
